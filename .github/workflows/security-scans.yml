@@ -21,12 +21,13 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=cstudy1.projectKey=cstudy1_cstudy
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=cstudy1 -Dsonar.projectKey=cstudy1_cstudy
 
   snyk-scan:
-    needs: sonar-scan
-    if: always()
     name: Snyk Security Scan
+    needs: 
+      - sonar-scan
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,9 +38,10 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   zap-scan:
-    needs: snyk-scan
-    if: always()
     name: OWASP ZAP Scan
+    needs: 
+      - snyk-scan
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

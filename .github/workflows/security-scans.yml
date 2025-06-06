@@ -4,6 +4,9 @@ on:
     branches:
       - main
 
+permissions:
+  issues: write
+
 jobs:
   sonar-scan:
     name: SonarQube Analysis
@@ -49,3 +52,5 @@ jobs:
         uses: zaproxy/action-baseline@v0.14.0
         with:
           target: 'https://www.zaproxy.org'
+          fail_action: false
+          issue_title: ''
